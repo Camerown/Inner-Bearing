@@ -1,0 +1,893 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Waar begin jij in het Vitaliteitskompas?</title>
+  <style>
+    :root {
+      --green: #2d4a3e;
+      --green-2: #697366;
+      --sand: #ede6d6;
+      --paper: #f5f0e8;
+      --gold: #e0a21f;
+      --white: #fffaf2;
+      --line: rgba(45, 74, 62, 0.18);
+      --shadow: 0 24px 70px rgba(45, 74, 62, 0.14);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--green);
+      background:
+        radial-gradient(circle at 88% 12%, rgba(224, 162, 31, 0.16), transparent 28rem),
+        radial-gradient(circle at 8% 92%, rgba(45, 74, 62, 0.10), transparent 34rem),
+        linear-gradient(135deg, var(--paper), var(--sand));
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh;
+    }
+
+    .shell {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 36px 0;
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 300px;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .panel,
+    .side {
+      background: rgba(255, 250, 242, 0.86);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    .panel {
+      min-height: 650px;
+      padding: clamp(22px, 4vw, 46px);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .eyebrow {
+      margin: 0 0 14px;
+      color: var(--green-2);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      max-width: 780px;
+      font-size: clamp(2.3rem, 5vw, 4.8rem);
+      line-height: 0.96;
+    }
+
+    h2 {
+      font-size: clamp(1.7rem, 3vw, 2.7rem);
+      line-height: 1.05;
+    }
+
+    h3 {
+      font-size: 1.35rem;
+      line-height: 1.15;
+    }
+
+    p {
+      color: var(--green-2);
+      line-height: 1.65;
+      font-size: 1rem;
+    }
+
+    .intro-text {
+      max-width: 690px;
+      margin: 22px 0 0;
+      font-size: 1.08rem;
+    }
+
+    .start-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(180px, 250px);
+      gap: 28px;
+      align-items: center;
+      margin-top: auto;
+      padding-top: 34px;
+    }
+
+    .compass {
+      position: relative;
+      width: min(250px, 70vw);
+      aspect-ratio: 1;
+      margin-left: auto;
+      border: 1px solid rgba(45, 74, 62, 0.22);
+      border-radius: 50%;
+      background:
+        conic-gradient(from 45deg, rgba(224, 162, 31, 0.22), rgba(45, 74, 62, 0.08), rgba(45, 74, 62, 0.18), rgba(224, 162, 31, 0.12), rgba(224, 162, 31, 0.22)),
+        radial-gradient(circle, rgba(255, 250, 242, 0.92) 0 28%, rgba(255, 250, 242, 0.22) 29% 100%);
+    }
+
+    .compass::before,
+    .compass::after {
+      content: "";
+      position: absolute;
+      inset: 50% auto auto 50%;
+      background: rgba(45, 74, 62, 0.35);
+      transform: translate(-50%, -50%);
+    }
+
+    .compass::before {
+      width: 1px;
+      height: 82%;
+    }
+
+    .compass::after {
+      width: 82%;
+      height: 1px;
+    }
+
+    .axis {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      width: 74px;
+      height: 74px;
+      border: 1px solid rgba(45, 74, 62, 0.16);
+      border-radius: 50%;
+      background: rgba(245, 240, 232, 0.72);
+      color: var(--green);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 2rem;
+    }
+
+    .axis.hart { top: 18%; left: 18%; }
+    .axis.hoofd { top: 18%; right: 18%; }
+    .axis.lichaam { bottom: 18%; left: 18%; }
+    .axis.ziel { bottom: 18%; right: 18%; }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    button {
+      appearance: none;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      padding: 13px 19px;
+      color: var(--green);
+      background: transparent;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 160ms ease, background 160ms ease, border-color 160ms ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    .primary {
+      background: var(--green);
+      color: var(--white);
+    }
+
+    .secondary {
+      border-color: rgba(45, 74, 62, 0.22);
+      background: rgba(255, 250, 242, 0.48);
+    }
+
+    .ghost {
+      padding-inline: 8px;
+      color: var(--green-2);
+    }
+
+    .topline {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .progress-wrap {
+      min-width: 180px;
+      text-align: right;
+    }
+
+    .progress-label {
+      color: var(--green-2);
+      font-size: 0.92rem;
+      margin-bottom: 8px;
+    }
+
+    .progress {
+      overflow: hidden;
+      height: 8px;
+      border-radius: 999px;
+      background: rgba(45, 74, 62, 0.10);
+    }
+
+    .progress > span {
+      display: block;
+      height: 100%;
+      width: 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--green), var(--gold));
+      transition: width 220ms ease;
+    }
+
+    .answers {
+      display: grid;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .answer {
+      width: 100%;
+      min-height: 74px;
+      padding: 17px 18px;
+      text-align: left;
+      border: 1px solid rgba(45, 74, 62, 0.16);
+      border-radius: var(--radius);
+      background: rgba(255, 250, 242, 0.66);
+      color: var(--green);
+      font-weight: 600;
+      line-height: 1.35;
+    }
+
+    .answer.selected {
+      border-color: rgba(224, 162, 31, 0.85);
+      background: rgba(224, 162, 31, 0.13);
+      box-shadow: inset 0 0 0 1px rgba(224, 162, 31, 0.35);
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-top: auto;
+      padding-top: 28px;
+    }
+
+    .hint {
+      margin: 12px 0 0;
+      color: var(--green-2);
+      font-size: 0.94rem;
+    }
+
+    .side {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .mini-title {
+      color: var(--green-2);
+      font-size: 0.84rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .module-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .module-pill {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      padding: 11px 12px;
+      border: 1px solid rgba(45, 74, 62, 0.13);
+      border-radius: var(--radius);
+      background: rgba(255, 250, 242, 0.44);
+      color: var(--green);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .dot {
+      flex: 0 0 auto;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--gold);
+      opacity: 0.75;
+    }
+
+    .result-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(260px, 0.95fr);
+      gap: 26px;
+      margin-top: 28px;
+    }
+
+    .result-card {
+      border: 1px solid rgba(45, 74, 62, 0.16);
+      border-radius: var(--radius);
+      padding: 22px;
+      background: rgba(255, 250, 242, 0.62);
+    }
+
+    .rank {
+      display: grid;
+      gap: 14px;
+    }
+
+    .rank-item {
+      display: grid;
+      gap: 7px;
+    }
+
+    .rank-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      font-weight: 800;
+    }
+
+    .bar {
+      overflow: hidden;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(45, 74, 62, 0.10);
+    }
+
+    .bar span {
+      display: block;
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--green), var(--gold));
+    }
+
+    .weeks {
+      margin: 16px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 8px;
+    }
+
+    .weeks li {
+      padding-left: 16px;
+      color: var(--green-2);
+      position: relative;
+      line-height: 1.5;
+    }
+
+    .weeks li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.62em;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .screen {
+      display: none;
+      height: 100%;
+    }
+
+    .screen.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .small-note {
+      font-size: 0.9rem;
+      color: var(--green-2);
+    }
+
+    @media (max-width: 900px) {
+      .app,
+      .result-layout,
+      .start-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .side {
+        order: -1;
+      }
+
+      .compass {
+        margin: 0;
+      }
+
+      .topline {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .progress-wrap {
+        width: 100%;
+        min-width: 0;
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .shell {
+        width: min(100% - 20px, 1120px);
+        padding: 10px 0;
+      }
+
+      .panel,
+      .side {
+        box-shadow: none;
+      }
+
+      .panel {
+        min-height: auto;
+        padding: 22px 16px;
+      }
+
+      .axis {
+        width: 58px;
+        height: 58px;
+        font-size: 1.45rem;
+      }
+
+      .nav {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .btn-row {
+        width: 100%;
+      }
+
+      .btn-row button,
+      .nav button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="app">
+      <section class="panel" aria-live="polite">
+        <div id="startScreen" class="screen active">
+          <p class="eyebrow">Vitaliteitskompas scan</p>
+          <h1>Waar begin jij?</h1>
+          <p class="intro-text">Je hoeft niet alles tegelijk te doen. Deze korte scan helpt je ontdekken welke module nu het meeste kan opleveren. Kies steeds het antwoord dat het meest herkenbaar voelt in je dagelijks leven.</p>
+          <p class="intro-text">Er zijn geen goede of foute antwoorden. Je uitslag is een startadvies, geen diagnose.</p>
+          <div class="start-grid">
+            <div>
+              <div class="btn-row">
+                <button class="primary" id="startBtn">Start de scan</button>
+              </div>
+              <p class="hint">12 vragen. Ongeveer 3 minuten.</p>
+            </div>
+            <div class="compass" aria-hidden="true">
+              <span class="axis hart">♡</span>
+              <span class="axis hoofd">◌</span>
+              <span class="axis lichaam">⌁</span>
+              <span class="axis ziel">◎</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="questionScreen" class="screen">
+          <div class="topline">
+            <div>
+              <p class="eyebrow" id="questionEyebrow">Vraag</p>
+              <h2 id="questionTitle"></h2>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-label" id="progressLabel"></div>
+              <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+            </div>
+          </div>
+          <div class="answers" id="answers"></div>
+          <p class="hint" id="questionHint">Kies wat het meest herkenbaar is. Twijfel je? Kies wat het vaakst voorkomt.</p>
+          <div class="nav">
+            <button class="secondary" id="backBtn">Vorige</button>
+            <div class="btn-row">
+              <button class="ghost" id="restartBtn">Opnieuw starten</button>
+              <button class="primary" id="nextBtn">Volgende</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="resultScreen" class="screen">
+          <p class="eyebrow">Jouw startadvies</p>
+          <h2 id="resultTitle"></h2>
+          <p id="resultIntro"></p>
+          <div class="result-layout">
+            <div class="result-card">
+              <div class="mini-title">Top 3 modules</div>
+              <div class="rank" id="topThree"></div>
+            </div>
+            <div class="result-card">
+              <div class="mini-title">Aanbevolen start</div>
+              <h3 id="primaryModule"></h3>
+              <p id="primaryText"></p>
+              <ul class="weeks" id="primaryWeeks"></ul>
+              <p class="small-note" id="secondModule"></p>
+            </div>
+          </div>
+          <div class="result-layout">
+            <div class="result-card">
+              <div class="mini-title">Alle modules</div>
+              <div class="rank" id="allScores"></div>
+            </div>
+            <div class="result-card">
+              <div class="mini-title">Hoe is dit berekend?</div>
+              <p class="small-note">Elk antwoord geeft vooral punten aan één module, en soms een klein beetje aan een tweede module. Daardoor kan de scan beter laten zien welke thema's dicht bij elkaar liggen.</p>
+              <button class="secondary" id="againBtn">Scan opnieuw doen</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="side">
+        <div>
+          <div class="mini-title">Modules</div>
+          <p class="small-note">De scan vergelijkt jouw antwoorden met de zes inhoudelijke modules van Het Vitaliteitskompas.</p>
+        </div>
+        <div class="module-list" id="moduleList"></div>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+    const modules = {
+      sleep: {
+        name: "Slaap & Herstel",
+        accent: "#2d4a3e",
+        text: "Je systeem vraagt om een stevigere herstelbasis: beter slapen, rustiger afronden, ritme opbouwen en overdag slimmer met je energie omgaan.",
+        weeks: ["Week 1: Bewust worden van je slaap", "Week 2: Slaaproutine en slaaphygiëne", "Week 3: Ritme en je biologische klok"],
+        second: "Mooie tweede module: Ontspanning & Balans, vooral als stress of piekeren je slaap beïnvloedt."
+      },
+      food: {
+        name: "Voeding & Energie",
+        accent: "#e0a21f",
+        text: "Je energie lijkt sterk samen te hangen met brandstof, timing, hydratatie en kleine automatische keuzes. Deze module is geen dieet, maar een praktische verkenning van wat jou stabieler laat functioneren.",
+        weeks: ["Week 1: Voeding als brandstof", "Week 2: Ritme & de klok in je lijf", "Week 4: Hydratatie & energieregelaars"],
+        second: "Mooie tweede module: Slaap & Herstel, omdat voeding, cafeïne, ritme en slaap elkaar sterk beïnvloeden."
+      },
+      movement: {
+        name: "Beweging & Veerkracht",
+        accent: "#56715f",
+        text: "Je lichaam wil weer meer meedoen. Niet door grootse sportdoelen, maar door haalbare beweegmomenten, kracht, stabiliteit en vertrouwen.",
+        weeks: ["Week 1: Bewustwording: jouw startpunt", "Week 2: Kleine gewoontes, groot effect", "Week 3: Fundament: kracht, stabiliteit & mindset"],
+        second: "Mooie tweede module: Mentale Kracht & Zingeving, vooral als motivatie, zelfvertrouwen of volhouden een rol speelt."
+      },
+      calm: {
+        name: "Ontspanning & Balans",
+        accent: "#697366",
+        text: "Je systeem staat mogelijk vaak aan. Deze module helpt je eerder signalen herkennen, spanning reguleren en bewust herstelmomenten inbouwen.",
+        weeks: ["Week 1: Stress & Herstel", "Week 2: Adem als afstandsbediening", "Week 3: Microbreaks & Herstelmomenten"],
+        second: "Mooie tweede module: Slaap & Herstel, vooral als spanning je nachtrust raakt."
+      },
+      mind: {
+        name: "Mentale Kracht & Zingeving",
+        accent: "#4f604f",
+        text: "Je winst zit in meer mentale rust, mildheid, richting en betekenis. Deze module helpt je gedachten en emoties beter begrijpen en keuzes maken vanuit wat belangrijk voor je is.",
+        weeks: ["Week 1: Gedachten & emoties", "Week 3: Zelfcompassie", "Week 4: Waarden & richting"],
+        second: "Mooie tweede module: Verbonden Leven, vooral als steun, kwetsbaarheid of grenzen belangrijk zijn."
+      },
+      connection: {
+        name: "Verbonden Leven",
+        accent: "#8a7541",
+        text: "Vitaliteit groeit niet alleen in jezelf, maar ook in je relaties en omgeving. Deze module helpt je bouwen aan steun, echte verbinding, gezonde communicatie en grenzen.",
+        weeks: ["Week 1: Waarom verbondenheid essentieel is", "Week 2: Het buddy-effect en sociale steun", "Week 4: Gezonde communicatie & grenzen"],
+        second: "Mooie tweede module: Mentale Kracht & Zingeving, vooral als je meer richting, mildheid of betekenis zoekt."
+      }
+    };
+
+    const questions = [
+      {
+        title: "Hoe start je meestal je dag?",
+        answers: [
+          { text: "Ik word vaak moe wakker, ook als ik genoeg uren in bed heb gelegen.", scores: { sleep: 3, calm: 1 } },
+          { text: "Ik kom langzaam op gang en heb snel koffie, suiker of eten nodig.", scores: { food: 3, sleep: 1 } },
+          { text: "Mijn lijf voelt stijf, zwaar of weinig actief.", scores: { movement: 4 } },
+          { text: "Mijn hoofd staat al snel vol met alles wat moet gebeuren.", scores: { calm: 3, mind: 1 } }
+        ]
+      },
+      {
+        title: "Wat gebeurt er vaak later op de dag?",
+        answers: [
+          { text: "Ik merk dat ik eigenlijk nog niet goed hersteld ben van de vorige dag.", scores: { sleep: 3, calm: 1 } },
+          { text: "Ik krijg een energiedip, trek of zin in snacken.", scores: { food: 4 } },
+          { text: "Ik besef dat ik alweer uren heb gezeten of weinig heb bewogen.", scores: { movement: 4 } },
+          { text: "Ik raak sneller gespannen, prikkelbaar of onrustig.", scores: { calm: 3, mind: 1 } }
+        ]
+      },
+      {
+        title: "Wat doe je meestal als je een drukke werkdag hebt?",
+        answers: [
+          { text: "Ik ga later naar bed of slaap onrustiger.", scores: { sleep: 3, calm: 1 } },
+          { text: "Ik eet sneller tussendoor, drink meer koffie of sla maaltijden over.", scores: { food: 4 } },
+          { text: "Ik schrap beweging omdat er geen tijd lijkt te zijn.", scores: { movement: 4 } },
+          { text: "Ik ga door zonder pauze, ook als ik eigenlijk rust nodig heb.", scores: { calm: 3, sleep: 1 } }
+        ]
+      },
+      {
+        title: "Waar loop je het vaakst op vast als je iets gezonders wilt doen?",
+        answers: [
+          { text: "Ik maak bewegen te groot, waardoor ik niet begin of snel afhaak.", scores: { movement: 4 } },
+          { text: "Ik weet wel wat gezonder is, maar kies in de praktijk vaak anders.", scores: { food: 4 } },
+          { text: "Ik ben streng voor mezelf en raak ontmoedigd als het niet lukt.", scores: { mind: 3, connection: 1 } },
+          { text: "Ik probeer het vooral alleen en mis steun of afstemming met anderen.", scores: { connection: 3, mind: 1 } }
+        ]
+      },
+      {
+        title: "Welke situatie herken je het meest in de avond?",
+        answers: [
+          { text: "Ik neem mijn dag mee naar bed en kom moeilijk los van alles.", scores: { sleep: 3, calm: 1 } },
+          { text: "Ik plof neer, maar laad niet echt op.", scores: { calm: 3, sleep: 1 } },
+          { text: "Ik vraag me af waar ik het allemaal voor doe of mis richting.", scores: { mind: 3, connection: 1 } },
+          { text: "Ik voel me soms alleen met wat er in mij omgaat.", scores: { connection: 3, mind: 1 } }
+        ]
+      },
+      {
+        title: "Welke oefening zou je het makkelijkst deze week kunnen proberen?",
+        answers: [
+          { text: "Iemand vragen om mee te denken, mee te doen of af en toe in te checken.", scores: { connection: 3, movement: 1 } },
+          { text: "Een kleine keuze aanpassen rond ontbijt, lunch, koffie of snacks.", scores: { food: 4 } },
+          { text: "Elke dag een kort beweegmoment inplannen.", scores: { movement: 3, calm: 1 } },
+          { text: "Twee korte pauzes nemen om bewust te ademen of te ontspannen.", scores: { calm: 3, sleep: 1 } }
+        ]
+      },
+      {
+        title: "Waar zou je direct verschil van merken?",
+        answers: [
+          { text: "Minder spanning in mijn lijf.", scores: { calm: 3, sleep: 1 } },
+          { text: "Stabielere energie door de dag heen.", scores: { food: 3, movement: 1 } },
+          { text: "Meer vertrouwen dat ik kleine stappen kan volhouden.", scores: { mind: 3, movement: 1 } },
+          { text: "Meer rust in mijn hoofd en duidelijker richting.", scores: { mind: 3, calm: 1 } }
+        ]
+      },
+      {
+        title: "Welke zin zou jij kunnen zeggen?",
+        answers: [
+          { text: "Als mijn avonden rustiger waren, zou ik beter slapen.", scores: { sleep: 3, food: 1 } },
+          { text: "Ik wil beter voelen welke keuzes echt bij mij passen.", scores: { mind: 3, food: 1 } },
+          { text: "Ik wil sterker worden, maar het moet haalbaar blijven.", scores: { movement: 3, mind: 1 } },
+          { text: "Ik wil minder geleefd worden door stress, prikkels en haast.", scores: { calm: 3, sleep: 1 } }
+        ]
+      },
+      {
+        title: "Wat gebeurt er bij jou als de druk oploopt?",
+        answers: [
+          { text: "Mijn slaap wordt lichter of onrustiger.", scores: { sleep: 3, connection: 1 } },
+          { text: "Ik ga snacken, meer koffie drinken of maaltijden overslaan.", scores: { food: 4 } },
+          { text: "Ik stop juist met bewegen, terwijl ik weet dat het helpt.", scores: { movement: 3, mind: 1 } },
+          { text: "Ik trek me terug of praat minder makkelijk over wat er speelt.", scores: { connection: 4 } }
+        ]
+      },
+      {
+        title: "Wat zou voor jou thuis of op werk het meest zichtbaar veranderen?",
+        answers: [
+          { text: "Makkelijker delen hoe het echt met me gaat.", scores: { connection: 3, mind: 1 } },
+          { text: "Minder energiedips en bewustere keuzes rond eten en drinken.", scores: { food: 3, sleep: 1 } },
+          { text: "Samen met iemand een gezonde gewoonte volhouden.", scores: { connection: 3, movement: 1 } },
+          { text: "Meer rust, focus en mildheid naar mezelf.", scores: { mind: 3, calm: 1 } }
+        ]
+      },
+      {
+        title: "Wat helpt jou waarschijnlijk het meest om iets vol te houden?",
+        answers: [
+          { text: "Korte herstelmomenten die in mijn gewone dag passen.", scores: { calm: 3, sleep: 1 } },
+          { text: "Weten waarom ik iets doe en wat echt belangrijk voor me is.", scores: { mind: 3, connection: 1 } },
+          { text: "Steun van iemand anders, of duidelijke afspraken met mijn omgeving.", scores: { connection: 3, mind: 1 } },
+          { text: "Een simpele routine die ik elke dag kan herhalen.", scores: { sleep: 3, food: 1 } }
+        ]
+      },
+      {
+        title: "Als je morgen met één klein ding zou beginnen, wat kies je dan?",
+        answers: [
+          { text: "Eerder afronden, beter slapen en frisser wakker worden.", scores: { sleep: 3, calm: 1 } },
+          { text: "Iemand betrekken bij wat ik wil veranderen.", scores: { connection: 4 } },
+          { text: "Meer beweging in mijn dag brengen.", scores: { movement: 3, connection: 1 } },
+          { text: "Meer rust, richting of steun creëren.", scores: { mind: 3, connection: 1 } }
+        ]
+      }
+    ];
+
+    const moduleKeys = Object.keys(modules);
+    let current = 0;
+    let selected = Array(questions.length).fill(null);
+
+    const screens = {
+      start: document.getElementById("startScreen"),
+      question: document.getElementById("questionScreen"),
+      result: document.getElementById("resultScreen")
+    };
+
+    const showScreen = (name) => {
+      Object.values(screens).forEach(screen => screen.classList.remove("active"));
+      screens[name].classList.add("active");
+    };
+
+    const moduleList = document.getElementById("moduleList");
+    moduleList.innerHTML = moduleKeys.map(key => `
+      <div class="module-pill">
+        <span>${modules[key].name}</span>
+        <span class="dot" style="background:${modules[key].accent}"></span>
+      </div>
+    `).join("");
+
+    function renderQuestion() {
+      const question = questions[current];
+      document.getElementById("questionEyebrow").textContent = `Vraag ${current + 1}`;
+      document.getElementById("questionTitle").textContent = question.title;
+      document.getElementById("progressLabel").textContent = `${current + 1} van ${questions.length}`;
+      document.getElementById("progressBar").style.width = `${((current + 1) / questions.length) * 100}%`;
+
+      const answers = document.getElementById("answers");
+      answers.innerHTML = question.answers.map((answer, index) => `
+        <button class="answer ${selected[current] === index ? "selected" : ""}" data-answer="${index}">
+          ${answer.text}
+        </button>
+      `).join("");
+
+      answers.querySelectorAll("button").forEach(button => {
+        button.addEventListener("click", () => {
+          selected[current] = Number(button.dataset.answer);
+          renderQuestion();
+        });
+      });
+
+      document.getElementById("backBtn").disabled = current === 0;
+      document.getElementById("nextBtn").textContent = current === questions.length - 1 ? "Bekijk uitslag" : "Volgende";
+      document.getElementById("questionHint").textContent = selected[current] === null
+        ? "Kies wat het meest herkenbaar is. Twijfel je? Kies wat het vaakst voorkomt."
+        : "Mooi. Je kunt door naar de volgende vraag.";
+    }
+
+    function calculateScores() {
+      const scores = Object.fromEntries(moduleKeys.map(key => [key, 0]));
+
+      selected.forEach((answerIndex, questionIndex) => {
+        if (answerIndex === null || answerIndex === undefined) {
+          return;
+        }
+
+        const answer = questions[questionIndex].answers[answerIndex];
+        if (!answer) {
+          return;
+        }
+
+        Object.entries(answer.scores).forEach(([key, value]) => {
+          scores[key] += value;
+        });
+      });
+
+      const total = Object.values(scores).reduce((sum, value) => sum + value, 0);
+      return moduleKeys
+        .map(key => ({
+          key,
+          name: modules[key].name,
+          score: scores[key],
+          percent: total ? Math.round((scores[key] / total) * 100) : 0
+        }))
+        .sort((a, b) => b.score - a.score || modules[a.key].name.localeCompare(modules[b.key].name));
+    }
+
+    function renderScoreRows(target, rows, includeRank) {
+      target.innerHTML = rows.map((row, index) => `
+        <div class="rank-item">
+          <div class="rank-head">
+            <span>${includeRank ? `${index + 1}. ` : ""}${row.name}</span>
+            <span>${row.percent}%</span>
+          </div>
+          <div class="bar"><span style="width:${row.percent}%; background:linear-gradient(90deg, ${modules[row.key].accent}, #e0a21f)"></span></div>
+        </div>
+      `).join("");
+    }
+
+    function renderResults() {
+      const ranking = calculateScores();
+      const primary = ranking[0];
+      const primaryData = modules[primary.key];
+
+      document.getElementById("resultTitle").textContent = `Begin met ${primary.name}`;
+      document.getElementById("resultIntro").textContent = "Dit zijn de modules die het sterkst terugkomen in jouw antwoorden. Gebruik de top 3 als routekaart: start bovenaan en gebruik de tweede en derde module als verdieping.";
+      renderScoreRows(document.getElementById("topThree"), ranking.slice(0, 3), true);
+      renderScoreRows(document.getElementById("allScores"), ranking, false);
+
+      document.getElementById("primaryModule").textContent = primary.name;
+      document.getElementById("primaryText").textContent = primaryData.text;
+      document.getElementById("primaryWeeks").innerHTML = primaryData.weeks.map(week => `<li>${week}</li>`).join("");
+      document.getElementById("secondModule").textContent = primaryData.second;
+      showScreen("result");
+    }
+
+    function goToFirstUnanswered() {
+      const firstUnanswered = selected.findIndex(answer => answer === null || answer === undefined);
+      if (firstUnanswered === -1) {
+        return false;
+      }
+
+      current = firstUnanswered;
+      renderQuestion();
+      showScreen("question");
+      document.getElementById("questionHint").textContent = "Deze vraag mist nog. Kies een antwoord om je uitslag te bekijken.";
+      return true;
+    }
+
+    function resetScan() {
+      current = 0;
+      selected = Array(questions.length).fill(null);
+      renderQuestion();
+      showScreen("start");
+    }
+
+    document.getElementById("startBtn").addEventListener("click", () => {
+      current = 0;
+      renderQuestion();
+      showScreen("question");
+    });
+
+    document.getElementById("backBtn").addEventListener("click", () => {
+      if (current > 0) {
+        current -= 1;
+        renderQuestion();
+      }
+    });
+
+    function handleNext() {
+      if (selected[current] === null) {
+        document.getElementById("questionHint").textContent = "Kies eerst een antwoord om verder te gaan.";
+        return;
+      }
+
+      if (current === questions.length - 1) {
+        if (goToFirstUnanswered()) {
+          return;
+        }
+
+        renderResults();
+        return;
+      }
+
+      current += 1;
+      renderQuestion();
+    }
+
+    document.addEventListener("click", (event) => {
+      if (event.target && event.target.id === "nextBtn") {
+        handleNext();
+      }
+    });
+
+    document.getElementById("restartBtn").addEventListener("click", resetScan);
+    document.getElementById("againBtn").addEventListener("click", resetScan);
+  </script>
+</body>
+</html>
